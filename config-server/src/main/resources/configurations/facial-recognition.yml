@@ -1,0 +1,35 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 8050
+spring:
+  application:
+    name: facial-recognition
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/facial_recognition
+    username: postgres
+    password: shehan17
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+application:
+  config:
+    face-data-path: ./face-data
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

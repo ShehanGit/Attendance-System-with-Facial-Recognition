@@ -19,6 +19,11 @@ public class StudentService {
         return repository.findAll();
     }
 
+    public Student findStudentById(Integer studentId) {
+        return repository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+    }
+
     public List<Student> findAllStudentsBySchool(Integer schoolId) {
         return repository.findAllBySchoolId(schoolId);
     }

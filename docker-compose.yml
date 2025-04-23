@@ -13,6 +13,21 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+    # Initial database setup
+    command: >
+      bash -c "
+        echo \"PostgreSQL starting...\"
+        /usr/local/bin/docker-entrypoint.sh postgres &
+        sleep 10
+        echo \"Creating databases...\"
+        psql -U alibou -c \"CREATE DATABASE students;\"
+        psql -U alibou -c \"CREATE DATABASE schools;\"
+        psql -U alibou -c \"CREATE DATABASE attendance;\"
+        psql -U alibou -c \"CREATE DATABASE facial_recognition;\"
+        echo \"Databases created!\"
+        wait
+      "
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -27,6 +42,9 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+    depends_on:
+      - postgresql
+
   zipkin:
     container_name: zipkin
     image: openzipkin/zipkin

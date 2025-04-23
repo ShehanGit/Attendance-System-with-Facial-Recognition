@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+    Haar cascade file for face detection.
+    This is a standard OpenCV file used for face detection.
+    This XML contains trained cascade classifiers for detecting frontal faces.
+
+    Note: This is a truncated version of the file for demonstration.
+    In a real implementation, you should download the complete XML from:
+    https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_default.xml
+-->
+<opencv_storage>
+    <haarcascade_frontalface_default type_id="opencv-haar-classifier">
+        <size>
+            24 24</size>
+        <stages>
+            <_>
+                <!-- stage 0 -->
+                <trees>
+                    <_>
+                        <!-- tree 0 -->
+                        <_>
+                            <!-- root node -->
+                            <feature>
+                                <rects>
+                                    <_>3 7 14 4 -1.</_>
+                                    <_>3 9 14 2 2.</_></rects>
+                                <tilted>0</tilted></feature>
+                            <threshold>4.0141958743333817e-003</threshold>
+                            <left_val>0.0337941907346249</left_val>
+                            <right_val>0.8378106951713562</right_val></_></_>
+                    <_>
+                        <!-- tree 1 -->
+                        <_>
+                            <feature>
+                                <rects>
+                                    <_>1 7 19 4 -1.</_>
+                                    <_>1 9 19 2 2.</_></rects>
+                                <tilted>0</tilted></feature>
+                            <threshold>5.9523072241246700e-003</threshold>
+                            <left_val>0.0851475715637207</left_val>
+                            <right_val>0.6488301753997803</right_val></_></_>
+                    <_>
+                        <!-- tree 2 -->
+                        <_>
+                            <feature>
+                                <rects>
+                                    <_>3 3 16 12 -1.</_>
+                                    <_>3 9 16 6 2.</_></rects>
+                                <tilted>0</tilted></feature>
+                            <threshold>-8.8895427435636520e-003</threshold>
+                            <left_val>0.4141796827316284</left_val>
+                            <right_val>0.1320471018552780</right_val></_></_></trees>
+                <stage_threshold>0.8226894140243530</stage_threshold>
+                <parent>-1</parent>
+                <next>1</next></_>
+            <_>
+                <!-- stage 1 -->
+                <trees>
+                    <_>
+                        <!-- tree 0 -->
+                        <_>
+                            <feature>
+                                <rects>
+                                    <_>0 2 24 4 -1.</_>
+                                    <_>8 2 8 4 3.</_></rects>
+                                <tilted>0</tilted></feature>
+                            <threshold>-1.8866880193352699e-002</threshold>
+                            <left_val>0.1217815503478050</left_val>
+                            <right_val>0.6156241297721863</right_val></_></_>
+                    <_>
+                        <!-- tree 1 -->
+                        <_>
+                            <feature>
+                                <rects>
+                                    <_>3 3 18 2 -1.</_>
+                                    <_>3 4 18 1 2.</_></rects>
+                                <tilted>0</tilted></feature>
+                            <threshold>7.0672818273305893e-003</threshold>
+                            <left_val>0.1114168986678123</left_val>
+                            <right_val>0.4105092883110046</right_val></_></_></trees>
+                <stage_threshold>0.7280243635177612</stage_threshold>
+                <parent>0</parent>
+                <next>2</next></_>
+        </stages>
+    </haarcascade_frontalface_default>
+</opencv_storage>

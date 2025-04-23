@@ -20,6 +20,14 @@ spring:
           uri: http://localhost:8070
           predicates:
             - Path=/api/v1/schools/**
+        - id: attendance
+          uri: http://localhost:8060
+          predicates:
+            - Path=/api/v1/attendance/**
+        - id: facial-recognition
+          uri: http://localhost:8050
+          predicates:
+            - Path=/api/v1/facial-recognition/**
 
 management:
   tracing:
