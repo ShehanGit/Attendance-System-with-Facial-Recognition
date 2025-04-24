@@ -1,32 +1,24 @@
 services:
+  # Infrastructure
   postgresql:
     container_name: postgresql
     image: postgres
     environment:
-      POSTGRES_USER: alibou
-      POSTGRES_PASSWORD: alibou
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: shehan17
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - spring-network
     restart: unless-stopped
-    # Initial database setup
-    command: >
-      bash -c "
-        echo \"PostgreSQL starting...\"
-        /usr/local/bin/docker-entrypoint.sh postgres &
-        sleep 10
-        echo \"Creating databases...\"
-        psql -U alibou -c \"CREATE DATABASE students;\"
-        psql -U alibou -c \"CREATE DATABASE schools;\"
-        psql -U alibou -c \"CREATE DATABASE attendance;\"
-        psql -U alibou -c \"CREATE DATABASE facial_recognition;\"
-        echo \"Databases created!\"
-        wait
-      "
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   pgadmin:
     container_name: pgadmin
@@ -40,7 +32,7 @@ services:
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - spring-network
     restart: unless-stopped
     depends_on:
       - postgresql
@@ -51,12 +43,108 @@ services:
     ports:
       - "9411:9411"
     networks:
-      - zipkin
+      - spring-network
+    restart: unless-stopped
+
+  # Microservices
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+  discovery:
+    build: ./discovery
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-network
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8222:8222"
+    networks:
+      - spring-network
+    depends_on:
+      - discovery
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+
+  schools:
+    build: ./schools
+    container_name: schools
+    ports:
+      - "8070:8070"
+    networks:
+      - spring-network
+    depends_on:
+      - postgresql
+      - discovery
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+
+  students:
+    build: ./students
+    container_name: students
+    ports:
+      - "8090:8090"
+    networks:
+      - spring-network
+    depends_on:
+      - postgresql
+      - discovery
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+
+  attendance:
+    build: ./attendance
+    container_name: attendance
+    ports:
+      - "8060:8060"
+    networks:
+      - spring-network
+    depends_on:
+      - postgresql
+      - discovery
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+
+  facial-recognition:
+    build: ./facial-recognition
+    container_name: facial-recognition
+    ports:
+      - "8050:8050"
+    networks:
+      - spring-network
+    depends_on:
+      - postgresql
+      - discovery
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
 
 networks:
-  postgres:
-    driver: bridge
-  zipkin:
+  spring-network:
     driver: bridge
 
 volumes:
